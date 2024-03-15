@@ -1,0 +1,28 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "wetube clone built using NodeJS, Express, Mongo and ES6",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bugless-kadia/wetube.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "author": "Minsoo Kim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bugless-kadia/wetube/issues"
+  },
+  "homepage": "https://github.com/bugless-kadia/wetube#readme",
+  "dependencies": {
+    "express": "^4.18.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.24.0",
+    "nodemon": "^3.1.0"
+  }
+}
