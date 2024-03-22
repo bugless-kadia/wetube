@@ -7,7 +7,7 @@
     "url": "git+https://github.com/bugless-kadia/wetube.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "author": "Minsoo Kim",
   "license": "MIT",
