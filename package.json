@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/bugless-kadia/wetube#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.3",
     "mongoose": "^8.2.2",
     "morgan": "^1.10.0",
