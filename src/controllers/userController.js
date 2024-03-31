@@ -42,7 +42,7 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = 'Login';
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
     return res.status(400).render('login', {
       pageTitle,
@@ -62,6 +62,7 @@ export const postLogin = async (req, res) => {
   return res.redirect('/');
 };
 
+// 1.사용자의 Github ID와 함께 요구사항 요청(GET)
 export const startGithubLogin = (req, res) => {
   const baseUrl = 'https://github.com/login/oauth/authorize';
   const config = {
@@ -75,6 +76,7 @@ export const startGithubLogin = (req, res) => {
 };
 
 export const finishGithubLogin = async (req, res) => {
+  // 2.callback url에서 code를 포함한 parameter를 보내고(POST) access_token를 받음
   const baseUrl = 'https://github.com/login/oauth/access_token';
   const config = {
     client_id: process.env.GH_CLIENT,
@@ -91,6 +93,7 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
+  // 3-1. access_token으로 Github API를 이용해 user 정보 가져오기
   if ('access_token' in tokenRequest) {
     const { access_token } = tokenRequest;
     const apiUrl = 'https://api.github.com';
@@ -102,6 +105,7 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
     console.log(userData);
+    // 3-2. access_token으로 Github API를 이용해 email 정보 가져오기
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
         headers: {
@@ -109,18 +113,38 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    const email = emailData.find(
+    const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
-    if (!email) {
+    if (!emailObj) {
+      // set notification
       return res.redirect('/login');
     }
+    // 만약 해당 email을 가진 user가 없다면 계정 생성
+    let user = await User.findOne({ email: emailObj.email });
+    if (!user) {
+      user = await User.create({
+        avatarUrl: userData.avatar_url,
+        name: userData.name,
+        username: userData.login,
+        email: emailObj.email,
+        password: '',
+        socialOnly: true,
+        location: '',
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect('/');
   } else {
     return res.redirect('/login');
   }
 };
 
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect('/');
+};
+
 export const edit = (req, res) => res.send('Edit User');
-export const remove = (req, res) => res.send('Delete User');
-export const logout = (req, res) => res.send('Logout');
 export const see = (req, res) => res.send('See User');
