@@ -49,7 +49,6 @@ export const postLogin = async (req, res) => {
       errorMessage: 'An account with this username does not exists.',
     });
   }
-
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
     return res.status(400).render('login', {
@@ -146,5 +145,28 @@ export const logout = (req, res) => {
   return res.redirect('/');
 };
 
-export const edit = (req, res) => res.send('Edit User');
+export const getEdit = (req, res) => {
+  return res.render('edit-profile', { pageTitle: 'Edit Profile' });
+};
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect('/users/edit');
+};
+
 export const see = (req, res) => res.send('See User');
