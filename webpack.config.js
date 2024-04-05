@@ -2,7 +2,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: './src/client/js/main.js', // 변경하고자 하는 파일
+  entry: {
+    main: './src/client/js/main.js',
+    videoPlayer: './src/client/js/videoPlayer.js',
+  },
   mode: 'development',
   watch: true,
   plugins: [
@@ -11,14 +14,14 @@ module.exports = {
     }),
   ],
   output: {
-    filename: 'js/main.js',
-    path: path.resolve(__dirname, 'assets'), // 전환된 내용을 저장할 폴더(절대경로)
+    filename: 'js/[name].js', // entry에 있는 이름을 가져감
+    path: path.resolve(__dirname, 'assets'), // 전환된 내용을 저장할 폴더(파일까지의 전체 경로)
     clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.js$/, // 모든 javascript 파일들
+        test: /\.js$/,
         use: {
           loader: 'babel-loader',
           options: {
