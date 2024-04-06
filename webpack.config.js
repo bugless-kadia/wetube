@@ -7,7 +7,7 @@ module.exports = {
     videoPlayer: './src/client/js/videoPlayer.js',
   },
   mode: 'development',
-  watch: true,
+  watch: true, // assets 자동 재실행
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/style.css',
@@ -16,7 +16,7 @@ module.exports = {
   output: {
     filename: 'js/[name].js', // entry에 있는 이름을 가져감
     path: path.resolve(__dirname, 'assets'), // 전환된 내용을 저장할 폴더(파일까지의 전체 경로)
-    clean: true,
+    clean: true, // output folder 폴더 청소
   },
   module: {
     rules: [
