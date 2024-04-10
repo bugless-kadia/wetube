@@ -55,14 +55,14 @@ const handleLoadedMetadata = () => {
 
 const handleTimeUpdate = () => {
   currentTime.innerText = formatTime(Math.floor(video.currentTime));
-  timeline.value = Math.floor(video.currentTime); // 현재 시간을 가져옴
+  timeline.value = Math.floor(video.currentTime); // currentTime을 range에 가져오고 있음
 };
 
 const handleTimelineChange = (event) => {
   const {
     target: { value },
   } = event;
-  video.currentTime = value; // 현재 시간을 업데이트 함
+  video.currentTime = value; // currentTime에 range 값을 알려주고 있음
 };
 
 const handleFullscreen = () => {
@@ -76,32 +76,52 @@ const handleFullscreen = () => {
   }
 };
 
+const checkFullScreen = () => {
+  const fullscreen = document.fullscreenElement;
+  if (!fullscreen) {
+    fullScreen.innerText = 'Enter Full Screen';
+  }
+};
+
 const hideControls = () => videoControls.classList.remove('showing');
 
+// 비디오 위에서 마우스를 움직일 때 showing class를 주기 위한 함수
 const handleMouseMove = () => {
   if (controlsTimeout) {
     clearTimeout(controlsTimeout);
     controlsTimeout = null;
   }
+  // 비디오 위에서 마우스를 움직일 때마다 timeout 취소(2)
   if (controlsMovementTimeout) {
     clearTimeout(controlsMovementTimeout);
     controlsMovementTimeout = null;
   }
+  // 비디오 위에서 마우스를 움직일 때마다 timeout 생성(1)
   videoControls.classList.add('showing');
   controlsMovementTimeout = setTimeout(hideControls, 3000);
 };
 
 const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
-  console.log(controlsTimeout);
 };
 
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMuteClick);
 volumeRange.addEventListener('input', handleVolumeChange);
-video.addEventListener('loadedmetadata', handleLoadedMetadata);
+video.readyState
+  ? handleLoadedMetadata()
+  : video.addEventListener('loadedmetadata', handleLoadedMetadata);
 video.addEventListener('timeupdate', handleTimeUpdate);
 timeline.addEventListener('input', handleTimelineChange);
 fullScreen.addEventListener('click', handleFullscreen);
 video.addEventListener('mousemove', handleMouseMove);
 video.addEventListener('mouseleave', handleMouseLeave);
+document.addEventListener('keydown', (event) => {
+  if (event.code === 'Space') {
+    handlePlayClick();
+  }
+  if (event.keyCode === 70) {
+    handleFullscreen();
+  }
+});
+document.addEventListener('fullscreenchange', checkFullScreen);
