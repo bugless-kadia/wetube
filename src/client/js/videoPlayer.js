@@ -9,6 +9,8 @@ const fullScreen = document.getElementById('fullScreen');
 const videoContainer = document.getElementById('videoContainer');
 const videoControls = document.getElementById('videoControls');
 
+console.log(videoContainer);
+
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue = 0.5;
@@ -105,6 +107,13 @@ const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, {
+    method: 'POST',
+  });
+};
+
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMuteClick);
 volumeRange.addEventListener('input', handleVolumeChange);
@@ -114,14 +123,18 @@ video.readyState
 video.addEventListener('timeupdate', handleTimeUpdate);
 timeline.addEventListener('input', handleTimelineChange);
 fullScreen.addEventListener('click', handleFullscreen);
-video.addEventListener('mousemove', handleMouseMove);
-video.addEventListener('mouseleave', handleMouseLeave);
+video.addEventListener('ended', handleEnded);
+videoContainer.addEventListener('mousemove', handleMouseMove);
+videoContainer.addEventListener('mouseleave', handleMouseLeave);
 document.addEventListener('keydown', (event) => {
   if (event.code === 'Space') {
     handlePlayClick();
   }
   if (event.keyCode === 70) {
     handleFullscreen();
+  }
+  if (event.keyCode === 77) {
+    handleMuteClick();
   }
 });
 document.addEventListener('fullscreenchange', checkFullScreen);
