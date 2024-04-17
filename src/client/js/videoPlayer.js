@@ -128,10 +128,10 @@ document.addEventListener('keydown', (event) => {
   if (event.code === 'Space') {
     handlePlayClick();
   }
-  if (event.keyCode === 70) {
+  if (event.key === 'f') {
     handleFullscreen();
   }
-  if (event.keyCode === 77) {
+  if (event.key === 'm') {
     handleMuteClick();
   }
 });
