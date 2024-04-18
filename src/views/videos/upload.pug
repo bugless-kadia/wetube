@@ -1,9 +1,10 @@
 extends ../layouts/base
 
 block content   
-    div 
-        video#preview
-        button#actionBtn Start Recording
+    div.upload__container
+        div.upload__video
+            video#preview
+            button#actionBtn.social__btn Start Recording
     if errorMessage
         span=errorMessage
     form(method="POST", enctype="multipart/form-data") 

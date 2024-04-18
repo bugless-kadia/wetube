@@ -144,14 +144,13 @@ export const finishGithubLogin = async (req, res) => {
 
 export const logout = (req, res) => {
   req.session.destroy();
-  req.flash('info', 'Bye Bye');
+  // req.flash('info', 'Bye Bye');
   return res.redirect('/');
 };
 
 export const getEdit = (req, res) => {
   return res.render('users/edit-profile', { pageTitle: 'Edit Profile' });
 };
-
 export const postEdit = async (req, res) => {
   const {
     session: {
@@ -160,7 +159,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-
   if (username !== sessionUsername) {
     const exists = await User.exists({ username });
     if (exists) {
