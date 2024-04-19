@@ -12,7 +12,7 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate('owner').populate('comments');
-  console.log(video);
+  // console.log(video);
   if (!video) {
     return res.status(404).render('404', { pageTitle: 'Video not found.' });
   }
@@ -82,7 +82,7 @@ export const postUpload = async (req, res) => {
     });
     const user = await User.findById(_id);
     user.videos.push(newVideo._id);
-    user.save();
+    await user.save();
     return res.redirect('/');
   } catch (error) {
     return res.status(400).render('videos/upload', {
@@ -150,8 +150,34 @@ export const createComment = async (req, res) => {
     video: id,
   });
   video.comments.push(comment._id);
-  video.save();
+  await video.save();
   UserDB.comments.push(comment._id);
-  UserDB.save();
+  await UserDB.save();
   return res.status(201).json({ newCommentId: comment._id }); // created
+};
+
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { videoId },
+  } = req;
+  const video = await Video.findById(videoId).populate('owner');
+  console.log('hi!!!', video.owner);
+  const userId = video.owner._id;
+  const comments = video.owner.comments;
+  const user = await User.findById(userId);
+  console.log('efwe', video);
+
+  for (let i = 0; i < comments.length; i++) {
+    if (id == comments[i]) {
+      await Comment.findByIdAndDelete(id);
+
+      video.comments.splice(video.comments.indexOf(id), 1);
+      await video.save();
+      user.comments.splice(user.comments.indexOf(id), 1);
+      await user.save();
+      return res.sendStatus(200);
+    }
+  }
+  return res.sendStatus(403);
 };

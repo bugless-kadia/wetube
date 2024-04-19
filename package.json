@@ -7,6 +7,8 @@
     "url": "git+https://github.com/bugless-kadia/wetube.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build:server": "babel src -d build",
     "dev:server": "nodemon",
     "dev:assets": "webpack --config webpack.config.js"
   },
@@ -31,7 +33,8 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.4",
     "@babel/node": "^7.23.9",
     "@babel/preset-env": "^7.24.0",
     "babel-loader": "^9.1.3",
