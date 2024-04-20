@@ -10,8 +10,6 @@ module.exports = {
     recorder: BASE_JS + 'recorder.js',
     commentSection: BASE_JS + 'commentSection.js',
   },
-  mode: 'development',
-  watch: true, // assets 자동 재실행
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/style.css',

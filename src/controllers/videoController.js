@@ -12,7 +12,6 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate('owner').populate('comments');
-  // console.log(video);
   if (!video) {
     return res.status(404).render('404', { pageTitle: 'Video not found.' });
   }
@@ -162,12 +161,9 @@ export const deleteComment = async (req, res) => {
     body: { videoId },
   } = req;
   const video = await Video.findById(videoId).populate('owner');
-  console.log('hi!!!', video.owner);
   const userId = video.owner._id;
   const comments = video.owner.comments;
   const user = await User.findById(userId);
-  console.log('efwe', video);
-
   for (let i = 0; i < comments.length; i++) {
     if (id == comments[i]) {
       await Comment.findByIdAndDelete(id);
