@@ -18,10 +18,10 @@ header
                         if !loggedInUser.avatarUrl
                             span 😀
                         else
-                            if loggedInUser.avatarUrl.includes("github")
-                                img.header__avatar(src=loggedInUser.avatarUrl,crossorigin)
-                            else 
-                                img.header__avatar(src="/" + loggedInUser.avatarUrl,crossorigin)
+                            if loggedInUser.socialOnly.toString().includes("github")
+                                img.header__avatar(src=loggedInUser.avatarUrl)
+                            else
+                                img.header__avatar(src=loggedInUser.avatarUrl)
             else
                 li 
                     a(href="/join").header__btn Join
