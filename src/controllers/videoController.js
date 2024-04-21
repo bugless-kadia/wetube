@@ -6,7 +6,6 @@ export const home = async (req, res) => {
   const videos = await Video.find({})
     .sort({ createdAt: 'desc' })
     .populate('owner');
-  console.log(videos);
   return res.render('videos/home', { pageTitle: 'Home', videos });
 };
 
@@ -161,21 +160,24 @@ export const deleteComment = async (req, res) => {
   const {
     params: { id },
     body: { videoId },
+    session: {
+      user: { _id },
+    },
   } = req;
   const video = await Video.findById(videoId).populate('owner');
-  const userId = video.owner._id;
-  const comments = video.owner.comments;
-  const user = await User.findById(userId);
-  for (let i = 0; i < comments.length; i++) {
-    if (id == comments[i]) {
-      await Comment.findByIdAndDelete(id);
+  const comments = await Comment.findById(id);
+  const user = await User.findById(_id);
 
-      video.comments.splice(video.comments.indexOf(id), 1);
-      await video.save();
-      user.comments.splice(user.comments.indexOf(id), 1);
-      await user.save();
-      return res.sendStatus(200);
-    }
+  console.log('1', comments.owner);
+  console.log('2', user._id);
+  if (String(comments.owner) === String(user._id)) {
+    await Comment.findByIdAndDelete(id);
+    video.comments.splice(video.comments.indexOf(id), 1);
+    await video.save();
+    user.comments.splice(user.comments.indexOf(id), 1);
+    await user.save();
+    return res.sendStatus(200);
+  } else {
+    return res.sendStatus(403);
   }
-  return res.sendStatus(403);
 };

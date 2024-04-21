@@ -105,7 +105,6 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
     // 3-2. access_token으로 Github API를 이용해 email 정보 가져오기
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
@@ -238,7 +237,6 @@ export const see = async (req, res) => {
       model: 'User',
     },
   });
-  console.log(user);
   if (!user) {
     return res.status(404).render('404', { pageTitle: 'User not found.' });
   }
