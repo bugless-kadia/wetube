@@ -18,10 +18,13 @@ header
                         if !loggedInUser.avatarUrl
                             span 😀
                         else
-                            if loggedInUser.socialOnly.toString().includes("github")
-                                img.header__avatar(src=loggedInUser.avatarUrl)
+                            if isHeroku
+                                if loggedInUser.socialOnly.toString().includes("github")
+                                    img.header__avatar(src=loggedInUser.avatarUrl)
+                                else
+                                    img.header__avatar(src=loggedInUser.avatarUrl)
                             else
-                                img.header__avatar(src=loggedInUser.avatarUrl)
+                                img.header__avatar(src="/" + loggedInUser.avatarUrl)
             else
                 li 
                     a(href="/join").header__btn Join
