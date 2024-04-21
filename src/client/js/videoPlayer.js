@@ -75,7 +75,6 @@ const handleFullscreen = () => {
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
     document.exitFullscreen();
-    fullScreenIcon.classList = 'fas fa-expand';
   } else {
     videoContainer.requestFullscreen();
     fullScreenIcon.classList = 'fas fa-compress';
@@ -85,7 +84,7 @@ const handleFullscreen = () => {
 const checkFullScreen = () => {
   const fullscreen = document.fullscreenElement;
   if (!fullscreen) {
-    fullScreenBtn.innerText = 'Enter Full Screen';
+    fullScreenIcon.classList = 'fas fa-expand';
   }
 };
 
