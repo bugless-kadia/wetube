@@ -1,0 +1,42 @@
+.video__owner {
+  height: em;
+  margin: 10px 0;
+  h2 {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  .video__config--box {
+    display: flex;
+    justify-content: space-between;
+
+    small {
+      a {
+        font-weight: bolder;
+      }
+    }
+    .video__config {
+      display: flex;
+      div {
+        margin-right: 10px;
+        background-color: black;
+        color: white;
+        padding: 10px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+.video__info {
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  line-height: 1em;
+  p {
+    margin-bottom: 5px;
+  }
+  margin-bottom: 30px;
+}

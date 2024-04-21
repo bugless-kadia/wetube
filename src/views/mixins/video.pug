@@ -3,7 +3,7 @@ mixin video(video)
         if isHeroku
             div.video-mixin__thumb(style=`background-image:url(${video.thumbnailUrl});background-size:cover;background-position:center;`)
         else 
-            div.video-mixin__thumb(style=`background-image:url(/${video.thumbnailUrl});background-size:cover;background-position:center;`)
+            div.video-mixin__thumb(style=`background-image:url(${video.thumbnailUrl});background-size:cover;background-position:center;`)
         div.video-mixin__data
             span.video-mixin__title=video.title
             div.video-mixin__meta
